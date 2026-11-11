@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<h:head>
+    <title>TP2 - Assistant IA</title>
+
+    <h:outputStylesheet
+            library="css"
+            name="mycsslayout.css"/>
+</h:head>
+
+<h:body>
+
+    <main class="application">
+
+        <header class="entete">
+            <h1>Assistant IA</h1>
+            <p>TP2 - JSF, LangChain4j et Gemini</p>
+        </header>
+
+        <h:form id="formChat">
+
+            <p:messages id="messages"/>
+
+            <section class="barre-outils">
+
+                <div class="selection-role">
+
+                    <h:outputLabel
+                            for="role"
+                            value="Rôle système"/>
+
+                    <p:selectOneMenu
+                            id="role"
+                            disabled="true">
+
+                        <f:selectItem
+                                itemLabel="Assistant"
+                                itemValue="assistant"/>
+
+                        <f:selectItem
+                                itemLabel="Traducteur"
+                                itemValue="traducteur"/>
+
+                        <f:selectItem
+                                itemLabel="Coach de débat scientifique"
+                                itemValue="coach"/>
+
+                    </p:selectOneMenu>
+                </div>
+
+                <p:commandButton
+                        value="Nouvelle conversation"
+                        icon="pi pi-refresh"
+                        type="button"
+                        disabled="true"
+                        styleClass="bouton-secondaire"/>
+
+            </section>
+
+            <section class="conversation"
+                     id="conversation">
+
+                <div class="message-assistant">
+
+                    <strong>Assistant</strong>
+
+                    <p>
+                        Bonjour ! Je suis votre assistant IA.
+                        Comment puis-je vous aider ?
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section class="zone-saisie">
+
+                <p:inputTextarea
+                        id="question"
+                        rows="3"
+                        autoResize="false"
+                        placeholder="Écrivez votre question..."
+                        styleClass="champ-question"/>
+
+                <p:commandButton
+                        id="envoyer"
+                        value="Envoyer"
+                        icon="pi pi-send"
+                        type="button"
+                        disabled="true"
+                        styleClass="bouton-envoyer"/>
+
+            </section>
+
+        </h:form>
+
+    </main>
+
+    <h:outputScript
+            library="js"
+            name="script.js"
+            target="body"/>
+
+</h:body>
+</html>
