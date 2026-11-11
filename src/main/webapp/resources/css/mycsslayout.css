@@ -98,3 +98,27 @@ body {
         max-width: 100%;
     }
 }
+
+.message-utilisateur {
+    max-width: 80%;
+    margin: 0 0 16px auto;
+    padding: 16px;
+    border-radius: 12px;
+    background: #dbece1;
+}
+
+.message-assistant {
+    margin-bottom: 16px;
+}
+
+.auteur {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.texte-message {
+    display: block;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}

@@ -3,18 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
       xmlns:p="primefaces">
 
 <h:head>
     <title>TP2 - Assistant IA</title>
-
     <h:outputStylesheet
             library="css"
             name="mycsslayout.css"/>
 </h:head>
 
 <h:body>
-
     <main class="application">
 
         <header class="entete">
@@ -24,19 +23,20 @@
 
         <h:form id="formChat">
 
-            <p:messages id="messages"/>
+            <p:messages
+                    id="messages"
+                    closable="true"/>
 
             <section class="barre-outils">
 
                 <div class="selection-role">
-
                     <h:outputLabel
                             for="role"
                             value="Rôle système"/>
 
                     <p:selectOneMenu
                             id="role"
-                            disabled="true">
+                            value="#{bb.roleSysteme}">
 
                         <f:selectItem
                                 itemLabel="Assistant"
@@ -50,38 +50,67 @@
                                 itemLabel="Coach de débat scientifique"
                                 itemValue="coach"/>
 
+                        <p:ajax
+                                event="change"
+                                process="@this"
+                                listener="#{bb.changerRole}"
+                                update="@form"/>
                     </p:selectOneMenu>
                 </div>
 
                 <p:commandButton
                         value="Nouvelle conversation"
                         icon="pi pi-refresh"
-                        type="button"
-                        disabled="true"
+                        action="#{bb.nouvelleConversation}"
+                        process="@this"
+                        update="@form"
                         styleClass="bouton-secondaire"/>
-
             </section>
 
-            <section class="conversation"
-                     id="conversation">
+            <h:panelGroup
+                    id="conversation"
+                    layout="block"
+                    styleClass="conversation">
 
-                <div class="message-assistant">
+                <ui:repeat
+                        value="#{bb.conversation}"
+                        var="message">
 
-                    <strong>Assistant</strong>
+                    <div class="#{message.utilisateur
+                            ? 'message-utilisateur'
+                            : 'message-assistant'}">
 
-                    <p>
-                        Bonjour ! Je suis votre assistant IA.
-                        Comment puis-je vous aider ?
-                    </p>
+                        <div class="auteur">
+                            <h:outputText
+                                    value="#{message.auteur}"/>
+                        </div>
 
-                </div>
+                        <h:outputText
+                                value="#{message.texte}"
+                                styleClass="texte-message"/>
+                    </div>
 
-            </section>
+                </ui:repeat>
+
+                <h:panelGroup
+                        rendered="#{empty bb.conversation}">
+
+                    <div class="message-assistant">
+                        <strong>Assistant</strong>
+                        <p>
+                            Bonjour ! Comment puis-je vous aider ?
+                        </p>
+                    </div>
+
+                </h:panelGroup>
+
+            </h:panelGroup>
 
             <section class="zone-saisie">
 
                 <p:inputTextarea
                         id="question"
+                        value="#{bb.question}"
                         rows="3"
                         autoResize="false"
                         placeholder="Écrivez votre question..."
@@ -91,20 +120,19 @@
                         id="envoyer"
                         value="Envoyer"
                         icon="pi pi-send"
-                        type="button"
-                        disabled="true"
+                        action="#{bb.envoyer}"
+                        process="@form"
+                        update="@form"
+                        oncomplete="defilerConversation();"
                         styleClass="bouton-envoyer"/>
-
             </section>
 
         </h:form>
-
     </main>
 
     <h:outputScript
             library="js"
             name="script.js"
             target="body"/>
-
 </h:body>
 </html>
